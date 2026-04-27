@@ -62,9 +62,12 @@
     <p>Daftar Harga Sembako Terbaru</p>
   </header>
 
-  <div class="container">
-    <h2>Daftar Harga Barang</h2>
-    <table>
+ <div class="container">
+  <h2>Daftar Harga Barang</h2>
+
+  <button onclick="tambahProduk()">+ Tambah Produk</button>
+
+  <table>
       <thead>
         <tr>
           <th>No</th>
@@ -88,7 +91,7 @@
     <p>&copy; 2026 Toko Aril Lubis - Semua Hak Dilindungi</p>
   </footer>
 
-  <script>
+ <script>
 const API = "https://script.google.com/macros/s/AKfycbyECT9-DTl1fUqJBUFcTOUiN1z87VJwwtxgl9NsKFZ3fbSWlWsE31xcrNttXvqT8er2/exec";
 
 async function loadData(){
@@ -98,9 +101,10 @@ async function loadData(){
   let tbody = document.querySelector("tbody");
   tbody.innerHTML = "";
 
-  data.slice(1).forEach(row=>{
+  data.slice(1).forEach((row, index)=>{
     tbody.innerHTML += `
       <tr>
+        <td>${index + 1}</td>
         <td>${row[0]}</td>
         <td>${row[1]}</td>
         <td>Rp ${row[2]}</td>
