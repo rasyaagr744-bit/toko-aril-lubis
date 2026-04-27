@@ -9,8 +9,9 @@
 body {font-family:Arial; margin:0; background:#f4f6f8}
 header {background:#2e7d32; color:white; text-align:center; padding:20px}
 .container {max-width:900px; margin:20px auto; background:white; padding:20px; border-radius:10px}
-button {padding:8px 12px; margin:5px; background:#2e7d32; color:white; border:none; border-radius:5px}
-table {width:100%; border-collapse:collapse}
+input {padding:8px; margin:5px; width:30%}
+button {padding:8px 12px; margin:5px; background:#2e7d32; color:white; border:none; border-radius:5px; cursor:pointer}
+table {width:100%; border-collapse:collapse; margin-top:10px}
 th,td {border:1px solid #ddd; padding:10px}
 th {background:#4caf50; color:white}
 </style>
@@ -27,8 +28,14 @@ th {background:#4caf50; color:white}
 
 <h2>Daftar Harga Barang</h2>
 
-<button onclick="tambah()">+ Tambah Produk</button>
+<!-- FORM TAMBAH PRODUK -->
+<h3>Tambah Produk</h3>
+<input id="nama" placeholder="Nama barang">
+<input id="satuan" placeholder="Satuan">
+<input id="harga" placeholder="Harga">
+<button onclick="tambah()">Simpan</button>
 
+<!-- TABEL -->
 <table>
 <thead>
 <tr>
@@ -45,7 +52,7 @@ th {background:#4caf50; color:white}
 </div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbyECT9-DTl1fUqJBUFcTOUiN1z87VJwwtxgl9NsKFZ3fbSWlWsE31xcrNttXvqT8er2/exec";
+const API = "https://script.google.com/macros/s/AKfycbw7Cwn6Yz1aSEnLNn9BDi-sh44z-K6OOK0uXnefmgisM_HiqyrekaFVqy-m7fMAVrUt/exec";
 
 async function load(){
 let res = await fetch(API);
@@ -70,14 +77,23 @@ tbody.innerHTML += `
 }
 
 async function tambah(){
-let nama=prompt("Nama barang:");
-let satuan=prompt("Satuan:");
-let harga=prompt("Harga:");
+let nama = document.getElementById("nama").value;
+let satuan = document.getElementById("satuan").value;
+let harga = document.getElementById("harga").value;
+
+if(!nama || !satuan || !harga){
+  alert("Isi semua data!");
+  return;
+}
 
 await fetch(API,{
 method:"POST",
 body:JSON.stringify({nama,satuan,harga})
 });
+
+document.getElementById("nama").value="";
+document.getElementById("satuan").value="";
+document.getElementById("harga").value="";
 
 load();
 }
