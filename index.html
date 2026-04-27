@@ -87,5 +87,44 @@
   <footer>
     <p>&copy; 2026 Toko Aril Lubis - Semua Hak Dilindungi</p>
   </footer>
+
+  <script>
+const API = "PASTE_LINK_KAMU_DISINI";
+
+async function loadData(){
+  let res = await fetch(API);
+  let data = await res.json();
+
+  let tbody = document.querySelector("tbody");
+  tbody.innerHTML = "";
+
+  data.slice(1).forEach(row=>{
+    tbody.innerHTML += `
+      <tr>
+        <td>${row[0]}</td>
+        <td>${row[1]}</td>
+        <td>Rp ${row[2]}</td>
+      </tr>
+    `;
+  });
+}
+
+async function tambahProduk(){
+  let nama = prompt("Nama barang:");
+  let satuan = prompt("Satuan:");
+  let harga = prompt("Harga:");
+
+  await fetch(API, {
+    method:"POST",
+    body: JSON.stringify({nama, satuan, harga})
+  });
+
+  loadData();
+}
+
+loadData();
+</script>
+
+<button onclick="tambahProduk()">+ Tambah Produk</button>
 </body>
 </html>
