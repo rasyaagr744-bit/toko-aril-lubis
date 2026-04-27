@@ -1,159 +1,124 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Daftar Harga Sembako - Toko Aril Lubis</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f6f8;
-      color: #333;
-    }
-    header {
-      background: #2e7d32;
-      color: white;
-      text-align: center;
-      padding: 25px;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2rem;
-    }
-    .container {
-      max-width: 900px;
-      margin: 30px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 20px;
-    }
-    table th, table td {
-      border: 1px solid #ddd;
-      padding: 12px;
-      text-align: left;
-    }
-    table th {
-      background: #4caf50;
-      color: white;
-    }
-    table tr:nth-child(even) {
-      background: #f9f9f9;
-    }
-    footer {
-      text-align: center;
-      padding: 15px;
-      margin-top: 30px;
-      background: #2e7d32;
-      color: white;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toko Aril Lubis</title>
+
+<style>
+body {font-family:Arial; margin:0; background:#f4f6f8}
+header {background:#2e7d32; color:white; text-align:center; padding:20px}
+.container {max-width:900px; margin:20px auto; background:white; padding:20px; border-radius:10px}
+input {padding:8px; margin:5px; width:30%}
+button {padding:8px 12px; margin:5px; background:#2e7d32; color:white; border:none; border-radius:5px}
+table {width:100%; border-collapse:collapse; margin-top:10px}
+th,td {border:1px solid #ddd; padding:10px}
+th {background:#4caf50; color:white}
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>Toko Aril Lubis</h1>
-    <p>Daftar Harga Sembako Terbaru</p>
-  </header>
 
- <div class="container">
-  <h2>Daftar Harga Barang</h2>
+<header>
+<h1>Toko Aril Lubis</h1>
+<p>Daftar Harga Sembako</p>
+</header>
 
-  <button onclick="tambahProduk()">+ Tambah Produk</button>
+<div class="container">
 
-  <table>
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Nama Barang</th>
-          <th>Satuan</th>
-          <th>Harga</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td>1</td><td>Beras Premium</td><td>5 Kg</td><td>Rp 75.000</td></tr>
-        <tr><td>2</td><td>Minyak Goreng</td><td>1 Liter</td><td>Rp 18.000</td></tr>
-        <tr><td>3</td><td>Gula Pasir</td><td>1 Kg</td><td>Rp 16.000</td></tr>
-        <tr><td>4</td><td>Telur Ayam</td><td>1 Kg</td><td>Rp 28.000</td></tr>
-        <tr><td>5</td><td>Tepung Terigu</td><td>1 Kg</td><td>Rp 12.000</td></tr>
-        <tr><td>6</td><td>Mie Instan</td><td>1 Dus</td><td>Rp 110.000</td></tr>
-      </tbody>
-    </table>
-  </div>
+<h3>Tambah Produk</h3>
+<input id="nama" placeholder="Nama barang">
+<input id="satuan" placeholder="Satuan">
+<input id="harga" placeholder="Harga">
+<button onclick="tambah()">Simpan</button>
 
-  <footer>
-    <p>&copy; 2026 Toko Aril Lubis - Semua Hak Dilindungi</p>
-  </footer>
+<table>
+<thead>
+<tr>
+<th>No</th>
+<th>Nama</th>
+<th>Satuan</th>
+<th>Harga</th>
+<th>Aksi</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+
+</div>
 
 <script>
 const API = "https://script.google.com/macros/s/AKfycbyECT9-DTl1fUqJBUFcTOUiN1z87VJwwtxgl9NsKFZ3fbSWlWsE31xcrNttXvqT8er2/exec";
 
-async function loadData(){
-  let res = await fetch(API);
-  let data = await res.json();
+async function load(){
+let res = await fetch(API);
+let data = await res.json();
 
-  let tbody = document.querySelector("tbody");
-  tbody.innerHTML = "";
+let tbody = document.querySelector("tbody");
+tbody.innerHTML="";
 
-  data.slice(1).forEach((row, index)=>{
-    tbody.innerHTML += `
-      <tr>
-        <td>${index+1}</td>
-        <td contenteditable onblur="updateData(${index}, this.parentElement)">
-          ${row[0]}
-        </td>
-        <td contenteditable onblur="updateData(${index}, this.parentElement)">
-          ${row[1]}
-        </td>
-        <td contenteditable onblur="updateData(${index}, this.parentElement)">
-          ${row[2]}
-        </td>
-      </tr>
-    `;
-  });
+data.slice(1).forEach((row,i)=>{
+tbody.innerHTML += `
+<tr>
+<td>${i+1}</td>
+<td>${row[0]}</td>
+<td>${row[1]}</td>
+<td>Rp ${row[2]}</td>
+<td>
+<button onclick="edit(${i})">Edit</button>
+<button onclick="hapus(${i})">Hapus</button>
+</td>
+</tr>`;
+});
 }
 
-async function updateData(index, rowEl){
-  let tds = rowEl.querySelectorAll("td");
+async function tambah(){
+let nama=document.getElementById("nama").value;
+let satuan=document.getElementById("satuan").value;
+let harga=document.getElementById("harga").value;
 
-  let nama = tds[1].innerText;
-  let satuan = tds[2].innerText;
-  let harga = tds[3].innerText;
+await fetch(API,{
+method:"POST",
+body:JSON.stringify({nama,satuan,harga})
+});
 
-  await fetch(API, {
-    method:"POST",
-    body: JSON.stringify({
-      action: "update",
-      row: index,
-      nama,
-      satuan,
-      harga
-    })
-  });
+load();
 }
 
-async function tambahProduk(){
-  let nama = prompt("Nama barang:");
-  let satuan = prompt("Satuan:");
-  let harga = prompt("Harga:");
+async function edit(i){
+let nama=prompt("Nama baru:");
+let satuan=prompt("Satuan baru:");
+let harga=prompt("Harga baru:");
 
-  await fetch(API, {
-    method:"POST",
-    body: JSON.stringify({nama, satuan, harga})
-  });
+await fetch(API,{
+method:"POST",
+body:JSON.stringify({
+action:"update",
+row:i,
+nama,
+satuan,
+harga
+})
+});
 
-  loadData();
+load();
 }
 
-loadData();
+async function hapus(i){
+if(confirm("Hapus produk?")){
+await fetch(API,{
+method:"POST",
+body:JSON.stringify({
+action:"delete",
+row:i
+})
+});
+load();
+}
+}
+
+load();
 </script>
 
-<button onclick="tambahProduk()">+ Tambah Produk</button>
 </body>
 </html>
